@@ -1,0 +1,27 @@
+# - http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# - https://github.com/spring-cloud/spring-cloud-config/blob/d9113a417dccff271744be3a4039e270b0cebd76/docs/src/main/asciidoc/spring-cloud-config.adoc#quick-start
+# - https://github.com/spring-cloud/spring-cloud-consul/blob/master/docs/src/main/asciidoc/spring-cloud-consul.adoc
+# - https://github.com/spring-cloud/spring-cloud-netflix/blob/8fb89b25d955fe175410853cea3b09333ef32d74/docs/src/main/asciidoc/spring-cloud-netflix.adoc
+# - https://github.com/Netflix
+# - https://github.com/Netflix/Hystrix/wiki/Configuration#intro
+# - https://github.com/Netflix/eureka/wiki/Configuring-Eureka
+# - https://github.com/Netflix/Turbine/wiki/Configuration-(1.x)
+
+
+#-----------------------------------------------------------------------------------------------
+# PROFILE LOCAL
+#-----------------------------------------------------------------------------------------------
+spring:
+  profiles: local
+
+#-----------------------------------------------------------------------------------------------
+# Logging configuration
+#-----------------------------------------------------------------------------------------------
+logging:
+  level:
+    org.springframework: WARN
+    com.sample: DEBUG
+  pattern:
+    console: '%highlight{%-5p|%d{ISO8601}{GMT}|trace=%X{X-B3-TraceId},span=%X{X-B3-SpanId}|%c{1}|%m%ex%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=blue bold, DEBUG=green bold, TRACE=blue}'
+    file: '%-5p|%d{ISO8601}{GMT}|trace=%X{X-B3-TraceId},span=%X{X-B3-SpanId}|%c{1}|%m%ex%n'
+  config: classpath:log4j2-local.xml
