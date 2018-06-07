@@ -63,14 +63,14 @@ public class KeyPairUtilTest {
   }
 
   @Test
-  public void createKeyPairrsaCase1Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
+  public void createKeyPairRSACase1Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 1024-bit RSA key pair
     KeyPair keyPair = createKeyPair("RSA", 1024);
     verifyCreatedKeys(keyPair);
   }
 
   @Test
-  public void createKeyPairrsaCase2Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
+  public void createKeyPairRSACase2Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 1024-bit RSA key pair
     KeyPair keyPair = createKeyPair("RSA", 1024, 888);
     verifyCreatedKeys(keyPair);
