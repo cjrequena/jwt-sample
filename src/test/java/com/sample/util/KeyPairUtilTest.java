@@ -2,12 +2,14 @@ package com.sample.util;
 
 import lombok.extern.log4j.Log4j2;
 import org.bouncycastle.util.encoders.Base64;
-import org.jose4j.jwk.RsaJsonWebKey;
-import org.jose4j.jwk.RsaJwkGenerator;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.lang.JoseException;
 import org.junit.Test;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -18,11 +20,11 @@ import java.security.spec.EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.sample.util.KeyPairUtil.createKeyPair;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 /**
  * <p>
@@ -82,6 +84,24 @@ public class KeyPairUtilTest {
     verifyCreatedKeys(keyPair);
   }
 
+  @Test
+  public void encryptionAndDecryptionTest()
+    throws NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException {
+    String classifiedInformation= "CLASSIFIED INFORMATION";
+    SecretKey validKey = KeyPairUtil.createSecretKey("AES", 128);
+    SecretKey invalidKey = KeyPairUtil.createSecretKey("AES", 128);
+    final String encryptedClassifiedInformation = KeyPairUtil.encrypt("CLASSIFIED INFORMATION", validKey, "AES");
+    assertEquals(KeyPairUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation);
+    assertNotEquals(KeyPairUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation+"DAMAGE");
+    try {
+      KeyPairUtil.decrypt(encryptedClassifiedInformation,invalidKey,"AES");
+      fail();
+    } catch (Exception e) {
+      //IGNORE
+    }
+
+  }
+
   private void verifyCreatedKeys(KeyPair keyPair) throws NoSuchAlgorithmException, InvalidKeySpecException {
     PrivateKey privateKey = keyPair.getPrivate();
     PublicKey publicKey = keyPair.getPublic();
@@ -110,5 +130,7 @@ public class KeyPairUtilTest {
     assertEquals(privateKey, privateKey2);
     assertEquals(publicKey, publicKey2);
   }
+
+
 
 }
