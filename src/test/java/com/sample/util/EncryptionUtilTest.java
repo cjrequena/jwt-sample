@@ -21,7 +21,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import static com.sample.util.KeyPairUtil.createKeyPair;
+import static com.sample.util.EncryptionUtil.createKeyPair;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
@@ -40,7 +40,7 @@ import static org.junit.Assert.fail;
  * @since JDK1.8
  */
 @Log4j2
-public class KeyPairUtilTest {
+public class EncryptionUtilTest {
 
   @Test
   public void createKeyPairDSACase1Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
@@ -85,16 +85,16 @@ public class KeyPairUtilTest {
   }
 
   @Test
-  public void encryptionAndDecryptionTest()
+  public void encryptionAndDecryptionCase1Test()
     throws NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException {
     String classifiedInformation= "CLASSIFIED INFORMATION";
-    SecretKey validKey = KeyPairUtil.createSecretKey("AES", 128);
-    SecretKey invalidKey = KeyPairUtil.createSecretKey("AES", 128);
-    final String encryptedClassifiedInformation = KeyPairUtil.encrypt("CLASSIFIED INFORMATION", validKey, "AES");
-    assertEquals(KeyPairUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation);
-    assertNotEquals(KeyPairUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation+"DAMAGE");
+    SecretKey validKey = EncryptionUtil.createSecretKey("AES", 128);
+    SecretKey invalidKey = EncryptionUtil.createSecretKey("AES", 128);
+    final String encryptedClassifiedInformation = EncryptionUtil.encrypt("CLASSIFIED INFORMATION", validKey, "AES");
+    assertEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation);
+    assertNotEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation+"DAMAGE");
     try {
-      KeyPairUtil.decrypt(encryptedClassifiedInformation,invalidKey,"AES");
+      EncryptionUtil.decrypt(encryptedClassifiedInformation,invalidKey,"AES");
       fail();
     } catch (Exception e) {
       //IGNORE

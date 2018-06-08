@@ -32,7 +32,7 @@ import java.security.Security;
  * @since JDK1.8
  */
 @Log4j2
-public class KeyPairUtil {
+public class EncryptionUtil {
 
   static {
     if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
@@ -43,7 +43,7 @@ public class KeyPairUtil {
   /**
    *
    */
-  private KeyPairUtil() {
+  private EncryptionUtil() {
   }
 
   /**
