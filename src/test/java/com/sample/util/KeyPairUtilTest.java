@@ -2,6 +2,10 @@ package com.sample.util;
 
 import lombok.extern.log4j.Log4j2;
 import org.bouncycastle.util.encoders.Base64;
+import org.jose4j.jwk.RsaJsonWebKey;
+import org.jose4j.jwk.RsaJwkGenerator;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.lang.JoseException;
 import org.junit.Test;
 
 import java.security.KeyFactory;
@@ -14,6 +18,8 @@ import java.security.spec.EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.sample.util.KeyPairUtil.createKeyPair;
 import static org.junit.Assert.*;
@@ -104,4 +110,5 @@ public class KeyPairUtilTest {
     assertEquals(privateKey, privateKey2);
     assertEquals(publicKey, publicKey2);
   }
+
 }
