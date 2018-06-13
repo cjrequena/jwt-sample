@@ -46,6 +46,8 @@ public class EncryptionUtilTest {
   public void createKeyPairDSACase1Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 1024-bit Digital Signature Algorithm (DSA) key pair
     KeyPair keyPair = createKeyPair("DSA", 1024);
+    log.debug("private key: {}", Base64.toBase64String(keyPair.getPrivate().getEncoded()));
+    log.debug("public key: {}", Base64.toBase64String(keyPair.getPublic().getEncoded()));
     verifyCreatedKeys(keyPair);
   }
 
@@ -53,6 +55,8 @@ public class EncryptionUtilTest {
   public void createKeyPairDSACase2Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 1024-bit Digital Signature Algorithm (DSA) key pair
     KeyPair keyPair = createKeyPair("DSA", 1024, 888);
+    log.debug("private key: {}", Base64.toBase64String(keyPair.getPrivate().getEncoded()));
+    log.debug("public key: {}", Base64.toBase64String(keyPair.getPublic().getEncoded()));
     verifyCreatedKeys(keyPair);
   }
 
@@ -60,6 +64,8 @@ public class EncryptionUtilTest {
   public void createKeyPairDHCase1Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 576-bit DH key pair
     KeyPair keyPair = createKeyPair("DH", 576);
+    log.debug("private key: {}", Base64.toBase64String(keyPair.getPrivate().getEncoded()));
+    log.debug("public key: {}", Base64.toBase64String(keyPair.getPublic().getEncoded()));
     verifyCreatedKeys(keyPair);
   }
 
@@ -67,6 +73,8 @@ public class EncryptionUtilTest {
   public void createKeyPairDHCase2Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 576-bit DH key pair
     KeyPair keyPair = createKeyPair("DH", 576, 888);
+    log.debug("private key: {}", Base64.toBase64String(keyPair.getPrivate().getEncoded()));
+    log.debug("public key: {}", Base64.toBase64String(keyPair.getPublic().getEncoded()));
     verifyCreatedKeys(keyPair);
   }
 
@@ -74,6 +82,8 @@ public class EncryptionUtilTest {
   public void createKeyPairRSACase1Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 1024-bit RSA key pair
     KeyPair keyPair = createKeyPair("RSA", 1024);
+    log.debug("private key: {}", Base64.toBase64String(keyPair.getPrivate().getEncoded()));
+    log.debug("public key: {}", Base64.toBase64String(keyPair.getPublic().getEncoded()));
     verifyCreatedKeys(keyPair);
   }
 
@@ -81,6 +91,8 @@ public class EncryptionUtilTest {
   public void createKeyPairRSACase2Test() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
     // Generate a 1024-bit RSA key pair
     KeyPair keyPair = createKeyPair("RSA", 1024, 888);
+    log.debug("private key: {}", Base64.toBase64String(keyPair.getPrivate().getEncoded()));
+    log.debug("public key: {}", Base64.toBase64String(keyPair.getPublic().getEncoded()));
     verifyCreatedKeys(keyPair);
   }
 
