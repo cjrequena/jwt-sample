@@ -159,5 +159,103 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
+    <build>
+        <finalName>jwt-sample</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>false</showWarnings>
+                    <showDeprecation>false</showDeprecation>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <delimiters>
+                        <delimiter>${*}</delimiter>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                </configuration>
+            </plugin>
+            <!-- -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+            </plugin>
+            <!-- -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[1.8,)</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>[3.2,)</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- -->
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>${swagger-codegen-maven-plugin.version}</version>
+            </plugin>
+            <!-- -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                    <classifier>exec</classifier>
+                    <excludeDevtools>true</excludeDevtools>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- Create a spring-boot-ready jar with all dependencies included -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
