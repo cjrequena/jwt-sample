@@ -3,23 +3,13 @@ package com.sample.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
-import org.bouncycastle.util.encoders.Base64;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import static org.junit.Assert.*;
 
 @Log4j2
 public class JwtUtilTest {
@@ -29,7 +19,7 @@ public class JwtUtilTest {
   @Test
   public void createSignedJwt() throws NoSuchAlgorithmException {
 
-    SecretKey secretKey = EncryptionUtil.createSecretKey("AES", 128);
+    String secretKey = UUID.randomUUID().toString();
 
     Map claimsMap = new HashMap();
     claimsMap.put("test", "test");
@@ -44,7 +34,7 @@ public class JwtUtilTest {
     JwsHeader header = jws.getHeader();
     Claims claims = jws.getBody();
 
-    log.info("secretKey: {}", Base64.toBase64String(secretKey.getEncoded()));
+    log.info("secretKey: {}", secretKey);
     log.info("signature: {}", signature);
     log.info("Expiration: {}" , claims.getExpiration());
     log.info("headers: {}", header);

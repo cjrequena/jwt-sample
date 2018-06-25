@@ -8,7 +8,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
 
-import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,22 +35,19 @@ public class JwtUtil {
    *
    * @param header
    * @param claims
-   * @param id
-   * @param issuer
-   * @param subject
    * @param secretKey
    * @param expirationMilliseconds
    * @return
    * @throws NoSuchAlgorithmException
    */
-  public static String createSignedJwt(Map header, Map claims, SecretKey secretKey, long expirationMilliseconds) throws NoSuchAlgorithmException {
+  public static String createSignedJwt(Map header, Map claims, String secretKey, long expirationMilliseconds) throws NoSuchAlgorithmException {
 
     LocalDateTime localDateTimeNow = LocalDateTime.now();
     Date dateNow = Date.from(localDateTimeNow.atZone(ZoneId.systemDefault()).toInstant());
     long millisecondsNow = localDateTimeNow.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
     //We will sign our JWT with our ApiKey secret
-    //Key signingKey = new SecretKeySpec(DatatypeConverter.parseBase64Binary(secretKey), signatureAlgorithm.getJcaName());
+    Key signingKey = new SecretKeySpec(DatatypeConverter.parseBase64Binary(secretKey), SignatureAlgorithm.HS256.getJcaName());
 
     //Let's set the JWT Claims
     JwtBuilder builder = Jwts.builder()
@@ -71,7 +70,7 @@ public class JwtUtil {
    * @param secretKey
    * @return
    */
-  public static Jws<Claims> parseJwt(String jwt, SecretKey secretKey) {
+  public static Jws<Claims> parseJwt(String jwt, String secretKey) {
     return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt);
   }
 
@@ -81,7 +80,7 @@ public class JwtUtil {
    * @param jwt
    * @return
    */
-  public static boolean validateJwt(String jwt, SecretKey secretKey){
+  public static boolean validateJwt(String jwt, String secretKey){
     String signature = parseJwt(jwt, secretKey).getSignature();
     JwsHeader header = parseJwt(jwt, secretKey).getHeader();
     Claims claims = parseJwt(jwt, secretKey).getBody();

@@ -100,18 +100,37 @@ public class EncryptionUtilTest {
   public void encryptionAndDecryptionCase1Test()
     throws NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException {
     String classifiedInformation= "CLASSIFIED INFORMATION";
-    SecretKey validKey = EncryptionUtil.createSecretKey("AES", 128);
-    SecretKey invalidKey = EncryptionUtil.createSecretKey("AES", 128);
-    final String encryptedClassifiedInformation = EncryptionUtil.encrypt("CLASSIFIED INFORMATION", validKey, "AES");
-    assertEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation);
-    assertNotEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,validKey,"AES"),classifiedInformation+"DAMAGE");
+    SecretKey secretKey = EncryptionUtil.createSecretKey("AES", 128);
+    SecretKey invalidSecretKey = EncryptionUtil.createSecretKey("AES", 128);
+
+    log.debug("SecretKey: {}", Base64.toBase64String(secretKey.getEncoded()));
+
+    final String encryptedClassifiedInformation = EncryptionUtil.encrypt("CLASSIFIED INFORMATION", secretKey, "AES");
+    assertEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,secretKey,"AES"),classifiedInformation);
+    assertNotEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,secretKey,"AES"),classifiedInformation+"DAMAGE");
     try {
-      EncryptionUtil.decrypt(encryptedClassifiedInformation,invalidKey,"AES");
+      EncryptionUtil.decrypt(encryptedClassifiedInformation,invalidSecretKey,"AES");
       fail();
     } catch (Exception e) {
       //IGNORE
     }
+  }
 
+  @Test
+  public void encryptionAndDecryptionCase2Test() throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
+
+    String privateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJ3EsxTGIyeqDSLuJW7HA93JJI+S4CpX5XyEZmP1YeuORXor7JnmV0uP/vi30hSXnchq7u2/6PWMCgr/lTv2zHWCfcpMGP3YCgWm1YK9l2qSH39BvcoPZ7jOrZ7rLuPc9+IcftPoGICPgzKvSVj5pXqDvLcB/Q1IZMCeaYPnmVgzAgMBAAECgYEAkf6B0YmA4qWEPnyt+xMDSutlf87kzYpE/LLwpTNfh8FCHcojyk7THUOFKNfB+fhLtDjwHOZoR0Ft0butd63siKVgF+mTYOIXtgIGIDs1f84bgLWMPZUAAkRHGAwUEIwOZIfkjar0ru45o5QqPBbsqR+GQWp9Jk5q8M0OY1fuYDECQQDKxSZYyXGpx6X57HPdw/GNN6FzGK3opbV5hote0kZvNu0of/vGeYAeytXNKuKxSEAMdv2SntTF5SpuRvpTdOGPAkEAxy9GzEjKrIFE+0fsuBJff9SdPlNxBsND/fY8SVqLPkLVMyySArHpyzqn4NYmyKb7NuJv9RXdnsz02mN1Q8wFHQJBAIHJRw41gkdFvvsFWfRsYsQdA34EIexzhIDQmYyL0wGEirANmz4irtsGwWqdNJR8xmI0F4Itn8s7L7l+POQGQAkCQAVJCNzk1ZPsPjNYvjxIKIaQ0rdTqX0fc09q2ECuCWHWjie0eA9gPy7oWIoLxK2wWJwlOAlN0jqjf5/H4dWxtTUCQGE4Zue0697sfQzzascAh0pgPo1Oqy8XEVv6FD+Ck00AQnCa3UgizF00G+s5bFKKp+F3l7Ck4TB+8vhmJg/n38I=";
+    String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdxLMUxiMnqg0i7iVuxwPdySSPkuAqV+V8hGZj9WHrjkV6K+yZ5ldLj/74t9IUl53Iau7tv+j1jAoK/5U79sx1gn3KTBj92AoFptWCvZdqkh9/Qb3KD2e4zq2e6y7j3PfiHH7T6BiAj4Myr0lY+aV6g7y3Af0NSGTAnmmD55lYMwIDAQAB";
+    String secretKey = "NarhNLmyQZKYwjuNzH4B3Q==";
+
+    String classifiedInformation= "CLASSIFIED INFORMATION";
+
+    String encryptedClassifiedInformation = EncryptionUtil.encrypt("CLASSIFIED INFORMATION", publicKey, "RSA");
+    assertEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,privateKey,"RSA"),classifiedInformation);
+    assertNotEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation,privateKey,"RSA"),classifiedInformation+"DAMAGE");
+
+    encryptedClassifiedInformation = EncryptionUtil.encrypt("CLASSIFIED INFORMATION", secretKey);
+    assertEquals(EncryptionUtil.decrypt(encryptedClassifiedInformation, secretKey), classifiedInformation);
   }
 
   private void verifyCreatedKeys(KeyPair keyPair) throws NoSuchAlgorithmException, InvalidKeySpecException {
